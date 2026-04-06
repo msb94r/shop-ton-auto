@@ -4,26 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shop Ton Auto</title>
+<meta name="description" content="Concession automobile — véhicules de qualité, prix transparents, rachat garanti sous 48h.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --black:#080808;
-  --black2:#111;
-  --black3:#1A1A1A;
-  --gray1:#2A2A2A;
-  --gray2:#444;
-  --gray3:#888;
-  --gray4:#BBB;
-  --gray5:#E8E8E8;
-  --white:#F8F8F6;
-  --pure:#FFFFFF;
+  --bk:#080808;--bk2:#111;--bk3:#1A1A1A;--bk4:#222;
+  --g1:#2A2A2A;--g2:#444;--g3:#777;--g4:#AAA;--g5:#DDD;
+  --wh:#F8F8F6;--pure:#FFF;
+  --err:#f28a8a;--ok:#7de8a0;
 }
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh;font-size:15px;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:var(--bk);color:var(--wh);min-height:100vh;font-size:15px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 h1,h2,h3{font-family:'Cormorant Garamond',serif}
 
-/* ─ NAV ─ */
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── BACK TO TOP ── */
+#btt{position:fixed;bottom:28px;right:28px;z-index:500;width:40px;height:40px;background:var(--wh);color:var(--bk);border:none;border-radius:2px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+#btt.show{opacity:1;pointer-events:all}
+#btt:hover{transform:translateY(-3px)}
+
+/* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:300;
   display:flex;align-items:center;justify-content:space-between;
@@ -34,281 +38,308 @@ nav{
 .logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:2px;color:var(--pure);cursor:pointer;text-transform:uppercase}
 .logo span{font-weight:300;font-style:italic}
 .nav-links{display:flex;gap:6px;align-items:center}
-.nl{color:var(--gray3);text-decoration:none;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:2px;transition:all .2s;cursor:pointer;border:1px solid transparent}
-.nl:hover,.nl.on{color:var(--white);border-color:rgba(255,255,255,.15)}
-.nl-cta{color:var(--black)!important;background:var(--white)!important;border-color:var(--white)!important;font-weight:600!important}
-.nl-cta:hover{background:var(--gray5)!important}
+.nl{color:var(--g3);text-decoration:none;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:2px;transition:all .2s;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+.nl:hover,.nl.on{color:var(--wh);border-color:rgba(255,255,255,.15)}
+.nl-cta{color:var(--bk)!important;background:var(--wh)!important;border-color:var(--wh)!important;font-weight:600!important}
+.nl-cta:hover{background:var(--g5)!important}
+/* hamburger */
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none}
+.burger span{display:block;width:22px;height:1.5px;background:var(--wh);transition:all .25s}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(8,8,8,.98);border-bottom:1px solid rgba(255,255,255,.08);z-index:299;padding:16px 24px;flex-direction:column;gap:4px}
+.mobile-menu.open{display:flex}
+.mob-link{color:var(--g3);font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:12px 8px;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;transition:color .18s}
+.mob-link:last-child{border:none}
+.mob-link:hover{color:var(--wh)}
 
-/* ─ PAGES ─ */
+/* ── PAGES ── */
 .page{display:none;padding-top:64px;min-height:100vh}
-.page.active{display:block;animation:pIn .4s ease}
-@keyframes pIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.page.active{display:block;animation:pIn .35s ease}
+@keyframes pIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* ════ HOME ════ */
-/* HERO */
-.hero{
-  min-height:calc(100vh - 64px);
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:0 0 0 0;position:relative;overflow:hidden;
-}
-.hero-bg{
-  position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 60% 80% at 20% 50%, rgba(255,255,255,.028) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 60% at 80% 20%, rgba(255,255,255,.015) 0%, transparent 50%);
-}
-.hero-grid-lines{
-  position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size:80px 80px;
-}
-.hero-content{
-  position:relative;z-index:2;
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:calc(100vh - 64px);
-}
-.hero-left{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:80px 64px;border-right:1px solid rgba(255,255,255,.06);
-}
-.hero-eyebrow{
-  font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;
-  color:var(--gray3);margin-bottom:36px;display:flex;align-items:center;gap:12px;
-}
-.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gray3)}
-.hero-h1{
-  font-size:clamp(52px,6.5vw,90px);font-weight:300;line-height:1.0;
-  letter-spacing:-1px;color:var(--pure);margin-bottom:32px;
-}
+.hero{min-height:calc(100vh - 64px);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 20% 50%,rgba(255,255,255,.025) 0%,transparent 60%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:80px 80px}
+.hero-main{flex:1;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 64px;border-right:1px solid rgba(255,255,255,.06)}
+.hero-ey{font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--g3);margin-bottom:36px;display:flex;align-items:center;gap:12px}
+.hero-ey::before{content:'';width:32px;height:1px;background:var(--g3)}
+.hero-h1{font-size:clamp(50px,6vw,88px);font-weight:300;line-height:1.0;letter-spacing:-1px;color:var(--pure);margin-bottom:30px}
 .hero-h1 em{font-style:italic;font-weight:300}
 .hero-h1 strong{font-weight:600;display:block}
-.hero-sub{
-  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:300;
-  color:var(--gray3);line-height:1.8;max-width:380px;margin-bottom:52px;
-}
+.hero-sub{font-size:15px;font-weight:300;color:var(--g3);line-height:1.8;max-width:380px;margin-bottom:48px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-.btn-w{
-  background:var(--white);color:var(--black);
-  padding:14px 32px;border:none;border-radius:2px;
-  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;
-  letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
-  transition:all .22s;
-}
-.btn-w:hover{background:var(--pure);transform:translateY(-2px);box-shadow:0 12px 36px rgba(255,255,255,.12)}
-.btn-brd{
-  background:transparent;color:var(--white);
-  padding:14px 32px;border:1px solid rgba(255,255,255,.25);border-radius:2px;
-  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
-  letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;
-  transition:all .22s;
-}
-.btn-brd:hover{border-color:var(--white);transform:translateY(-2px)}
-.hero-right{
-  display:flex;flex-direction:column;justify-content:space-between;
-  padding:80px 48px;
-}
-.hero-right-top{text-align:right}
-.hero-num{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(80px,14vw,180px);font-weight:300;
-  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.08);
-  line-height:1;user-select:none;
-}
-.hero-stats{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  border-top:1px solid rgba(255,255,255,.08);
-  padding-top:32px;gap:0;
-}
-.hs{padding:0 24px;border-right:1px solid rgba(255,255,255,.06)}
-.hs:last-child{border-right:none}
-.hs-n{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--pure);line-height:1}
-.hs-l{font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray3);margin-top:6px}
-.hero-bottom{
-  grid-column:1/-1;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 64px;border-top:1px solid rgba(255,255,255,.06);
-}
-.hero-ticker{display:flex;gap:40px;overflow:hidden}
-.ticker-item{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray3);white-space:nowrap}
-.ticker-sep{color:rgba(255,255,255,.15)}
+.btn-w{background:var(--wh);color:var(--bk);padding:14px 32px;border:none;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .22s}
+.btn-w:hover{background:var(--pure);transform:translateY(-2px);box-shadow:0 12px 36px rgba(255,255,255,.1)}
+.btn-brd{background:transparent;color:var(--wh);padding:14px 32px;border:1px solid rgba(255,255,255,.22);border-radius:2px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .22s}
+.btn-brd:hover{border-color:var(--wh);transform:translateY(-2px)}
+.hero-right{display:flex;flex-direction:column;justify-content:space-between;padding:80px 48px}
+.hero-num{font-family:'Cormorant Garamond',serif;font-size:clamp(80px,13vw,170px);font-weight:300;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.07);line-height:1;user-select:none;text-align:right}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.07);padding-top:28px}
+.hs{padding:0 20px;border-right:1px solid rgba(255,255,255,.06)}
+.hs:first-child{padding-left:0}
+.hs:last-child{border:none}
+.hs-n{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--pure);line-height:1}
+.hs-l{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--g3);margin-top:6px}
+.hero-bar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:18px 64px;border-top:1px solid rgba(255,255,255,.06)}
+.hero-ticker{display:flex;gap:36px}
+.ti{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--g2);white-space:nowrap}
+.ti-sep{color:rgba(255,255,255,.12)}
+
+/* LATEST CARS on home */
+.latest{padding:80px 64px;border-top:1px solid rgba(255,255,255,.06)}
+.latest-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px}
+.latest-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,46px);font-weight:300;letter-spacing:-1px;color:var(--pure)}
+.latest-head a{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--g3);cursor:pointer;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:2px;transition:color .18s;text-decoration:none}
+.latest-head a:hover{color:var(--wh)}
+.latest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.latest-empty{text-align:center;padding:64px;background:var(--bk);grid-column:1/-1;color:var(--g3);font-size:14px;font-weight:300}
 
 /* SERVICES */
-.services{padding:120px 64px;max-width:1400px;margin:0 auto}
-.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:32px}
-.sec-label{font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gray3);margin-bottom:12px}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:-1px;color:var(--pure);line-height:1.1}
+.services{padding:100px 64px;border-top:1px solid rgba(255,255,255,.06)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sec-label{font-size:10px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--g3);margin-bottom:12px}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,50px);font-weight:300;letter-spacing:-1px;color:var(--pure);line-height:1.1}
 .sec-title em{font-style:italic}
-.sec-sub{font-size:14px;color:var(--gray3);max-width:280px;text-align:right;line-height:1.7;font-weight:300}
+.sec-sub{font-size:14px;color:var(--g3);max-width:260px;text-align:right;line-height:1.7;font-weight:300}
 .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06)}
-.svc{background:var(--black);padding:48px 36px;transition:background .25s}
-.svc:hover{background:var(--black2)}
-.svc-num{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(255,255,255,.08);line-height:1;margin-bottom:24px}
-.svc h3{font-size:20px;font-weight:400;letter-spacing:-.2px;color:var(--pure);margin-bottom:12px}
-.svc p{font-size:13px;color:var(--gray3);line-height:1.7;font-weight:300}
+.svc{background:var(--bk);padding:44px 32px;transition:background .25s}
+.svc:hover{background:var(--bk2)}
+.svc-num{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:rgba(255,255,255,.07);line-height:1;margin-bottom:20px}
+.svc h3{font-size:19px;font-weight:400;color:var(--pure);margin-bottom:10px;letter-spacing:-.2px}
+.svc p{font-size:13px;color:var(--g3);line-height:1.7;font-weight:300}
 
 /* ════ VEHICLES ════ */
-.veh-top{
-  background:var(--black2);
-  padding:56px 64px 40px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
-.veh-top h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;letter-spacing:-1px;margin-bottom:6px}
-.veh-top p{color:var(--gray3);font-size:14px;margin-bottom:28px;font-weight:300}
+.veh-top{background:var(--bk2);padding:52px 64px 36px;border-bottom:1px solid rgba(255,255,255,.07)}
+.veh-top h1{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,50px);font-weight:300;letter-spacing:-1px;margin-bottom:6px}
+.veh-top p{color:var(--g3);font-size:13px;margin-bottom:24px;font-weight:300}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
-.fi{
-  background:transparent;color:var(--white);
-  border:1px solid rgba(255,255,255,.12);border-radius:2px;
-  padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;
-  font-weight:500;letter-spacing:.5px;outline:none;cursor:pointer;
-  transition:border-color .2s;
-}
+.fi{background:transparent;color:var(--wh);border:1px solid rgba(255,255,255,.12);border-radius:2px;padding:9px 16px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:.5px;outline:none;cursor:pointer;transition:border-color .2s}
 .fi:focus,.fi:hover{border-color:rgba(255,255,255,.4)}
-.fi::placeholder{color:var(--gray3)}
+.fi::placeholder{color:var(--g3)}
 .fi option{background:#111}
 input.fi{width:240px}
-.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:rgba(255,255,255,.05);padding:1px;margin:0}
-.car-card{background:var(--black);transition:all .25s;cursor:default}
-.car-card:hover{background:var(--black2)}
-.car-img-box{position:relative;height:220px;overflow:hidden;background:var(--black2)}
-.car-no-img{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-.car-no-img svg{opacity:.12}
-.car-no-img span{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)}
-.badge-new{position:absolute;top:16px;left:16px;background:var(--pure);color:var(--black);font-size:9px;font-weight:700;letter-spacing:2px;padding:4px 10px;text-transform:uppercase;z-index:2}
+.veh-count{padding:20px 64px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--g2);border-bottom:1px solid rgba(255,255,255,.05)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1px;background:rgba(255,255,255,.05)}
+
+/* CAR CARD */
+.car-card{background:var(--bk);transition:background .22s;cursor:default}
+.car-card:hover{background:var(--bk2)}
+.car-img-box{position:relative;height:220px;overflow:hidden;background:var(--bk2)}
+.car-no-img{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.car-no-img svg{opacity:.1}
+.car-no-img span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--g2)}
+.badge-new{position:absolute;top:14px;left:14px;background:var(--pure);color:var(--bk);font-size:9px;font-weight:700;letter-spacing:2px;padding:4px 10px;text-transform:uppercase;z-index:2}
 .car-body{padding:24px 28px 28px}
-.car-brand{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin-bottom:4px}
+.car-brand{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--g3);margin-bottom:4px}
 .car-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;letter-spacing:-.3px;color:var(--pure);margin-bottom:4px;line-height:1.1}
-.car-yr{font-size:12px;color:var(--gray3);margin-bottom:20px;font-weight:300}
-.car-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
-.chip{border:1px solid rgba(255,255,255,.1);border-radius:2px;font-size:11px;font-weight:500;letter-spacing:.5px;padding:4px 10px;color:var(--gray4)}
-.car-foot{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(255,255,255,.07)}
+.car-yr{font-size:12px;color:var(--g3);margin-bottom:18px;font-weight:300}
+.car-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.chip{border:1px solid rgba(255,255,255,.1);border-radius:2px;font-size:11px;font-weight:500;letter-spacing:.5px;padding:4px 10px;color:var(--g4)}
+.car-foot{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid rgba(255,255,255,.07)}
 .car-price{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;letter-spacing:-.5px;color:var(--pure)}
-.car-price small{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--gray3)}
-.btn-line{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.25);padding:9px 20px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
-.btn-line:hover{background:var(--white);color:var(--black);border-color:var(--white)}
-.empty-box{text-align:center;padding:100px 40px;color:var(--gray3);grid-column:1/-1;background:var(--black)}
-.empty-box h3{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--white);margin-bottom:8px}
+.car-price small{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--g3)}
+.btn-line{background:transparent;color:var(--wh);border:1px solid rgba(255,255,255,.22);padding:9px 20px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-line:hover{background:var(--wh);color:var(--bk);border-color:var(--wh)}
+.empty-box{text-align:center;padding:100px 40px;color:var(--g3);background:var(--bk);grid-column:1/-1}
+.empty-box h3{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--wh);margin-bottom:10px}
+.empty-box p{font-size:14px;font-weight:300;margin-bottom:24px}
 
 /* SLIDER */
-.car-slider{position:relative;height:220px;overflow:hidden;background:var(--black2)}
+.car-slider{position:relative;height:220px;overflow:hidden;background:var(--bk2)}
 .car-slider img{width:100%;height:220px;object-fit:cover;display:block;transition:opacity .2s}
-.sl-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,8,8,.7);border:1px solid rgba(255,255,255,.15);color:var(--white);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:3;transition:all .18s}
+.sl-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(8,8,8,.75);border:1px solid rgba(255,255,255,.15);color:var(--wh);width:32px;height:32px;border-radius:2px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:3;transition:all .18s}
 .sl-btn:hover{background:rgba(8,8,8,.95)}
-.sl-prev{left:12px}.sl-next{right:12px}
-.sl-dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
+.sl-prev{left:10px}.sl-next{right:10px}
+.sl-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
 .sl-dot{width:16px;height:2px;background:rgba(255,255,255,.3);border:none;cursor:pointer;padding:0;transition:all .2s;border-radius:1px}
 .sl-dot.on{background:var(--pure);width:24px}
-.sl-cnt{position:absolute;top:14px;right:14px;background:rgba(8,8,8,.65);color:var(--gray4);font-size:10px;font-weight:500;letter-spacing:1px;padding:4px 8px;border-radius:2px;z-index:3}
+.sl-cnt{position:absolute;top:12px;right:12px;background:rgba(8,8,8,.7);color:var(--g4);font-size:10px;font-weight:500;letter-spacing:1px;padding:4px 8px;border-radius:2px;z-index:3}
 
-/* PHOTO UPLOAD */
-.upload-zone{border:1px dashed rgba(255,255,255,.18);border-radius:2px;padding:36px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--black2)}
-.upload-zone:hover{border-color:rgba(255,255,255,.45);background:var(--black3)}
+/* UPLOAD */
+.upload-zone{border:1px dashed rgba(255,255,255,.18);border-radius:2px;padding:32px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--bk2)}
+.upload-zone:hover{border-color:rgba(255,255,255,.4);background:var(--bk3)}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-zone .uico{font-size:22px;margin-bottom:8px;opacity:.5}
-.upload-zone p{font-size:12px;color:var(--gray3);font-weight:300}
-.upload-zone .ul{color:var(--white);font-weight:500}
-.previews{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.upload-zone .uico{font-size:20px;margin-bottom:8px;opacity:.4}
+.upload-zone p{font-size:12px;color:var(--g3);font-weight:300}
+.upload-zone .ul{color:var(--wh);font-weight:500}
+.previews{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .prev-item{position:relative;width:90px;height:64px;border-radius:2px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
 .prev-item img{width:100%;height:100%;object-fit:cover}
-.prev-del{position:absolute;top:3px;right:3px;background:rgba(8,8,8,.8);color:var(--white);border:none;width:18px;height:18px;border-radius:1px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
-.prev-main{position:absolute;bottom:0;left:0;right:0;background:var(--pure);color:var(--black);font-size:9px;font-weight:700;text-align:center;padding:2px;letter-spacing:1px;text-transform:uppercase}
+.prev-del{position:absolute;top:3px;right:3px;background:rgba(8,8,8,.85);color:var(--wh);border:none;width:18px;height:18px;border-radius:1px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
+.prev-main{position:absolute;bottom:0;left:0;right:0;background:var(--pure);color:var(--bk);font-size:9px;font-weight:700;text-align:center;padding:2px;letter-spacing:1px;text-transform:uppercase}
 
 /* ════ SELL ════ */
-.sell-hero{
-  background:var(--black2);
-  padding:80px 64px;
-  display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:center;
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
-.sell-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,58px);font-weight:300;letter-spacing:-1px;color:var(--pure);margin-bottom:14px;line-height:1.05}
-.sell-hero > div > p{color:var(--gray3);line-height:1.8;font-size:14px;font-weight:300;max-width:400px}
-.steps{display:flex;flex-direction:column;gap:0}
-.step{display:flex;align-items:flex-start;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.sell-hero{background:var(--bk2);padding:80px 64px;display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:center;border-bottom:1px solid rgba(255,255,255,.07)}
+.sell-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,56px);font-weight:300;letter-spacing:-1px;color:var(--pure);margin-bottom:14px;line-height:1.05}
+.sell-hero>div>p{color:var(--g3);line-height:1.8;font-size:14px;font-weight:300;max-width:400px}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;align-items:flex-start;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
 .step:last-child{border:none}
-.step-n{width:28px;height:28px;border:1px solid rgba(255,255,255,.2);border-radius:50%;color:var(--gray3);font-size:11px;font-weight:600;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
-.step-t h4{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;letter-spacing:.2px}
-.step-t p{font-size:12px;color:var(--gray3);font-weight:300}
+.step-n{width:28px;height:28px;border:1px solid rgba(255,255,255,.18);border-radius:50%;color:var(--g3);font-size:11px;font-weight:600;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-t h4{font-size:13px;font-weight:600;color:var(--wh);margin-bottom:3px;letter-spacing:.2px;font-family:'DM Sans',sans-serif}
+.step-t p{font-size:12px;color:var(--g3);font-weight:300}
 .sell-form{max-width:800px;margin:0 auto;padding:72px 64px}
-.fsec{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gray3);margin:40px 0 18px;padding-top:40px;border-top:1px solid rgba(255,255,255,.07)}
+.fsec{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--g3);margin:40px 0 18px;padding-top:40px;border-top:1px solid rgba(255,255,255,.07)}
 .fsec:first-of-type{margin-top:0;padding-top:0;border-top:none}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fgrp{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
-.fgrp label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gray3)}
-.fgrp input,.fgrp select,.fgrp textarea{background:var(--black2);color:var(--white);border:1px solid rgba(255,255,255,.1);border-radius:2px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color .18s;width:100%}
-.fgrp input:focus,.fgrp select:focus,.fgrp textarea:focus{border-color:rgba(255,255,255,.4)}
+.fgrp label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--g3)}
+.fgrp input,.fgrp select,.fgrp textarea{background:var(--bk2);color:var(--wh);border:1px solid rgba(255,255,255,.1);border-radius:2px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color .18s,box-shadow .18s;width:100%}
+.fgrp input:focus,.fgrp select:focus,.fgrp textarea:focus{border-color:rgba(255,255,255,.38);box-shadow:0 0 0 3px rgba(255,255,255,.04)}
+.fgrp input.err,.fgrp select.err{border-color:rgba(242,138,138,.5)!important}
+.fgrp .err-msg{font-size:11px;color:var(--err);font-weight:400;letter-spacing:.3px;margin-top:2px}
 .fgrp select option{background:#111}
 .fgrp textarea{resize:vertical;min-height:96px}
 .fsub{text-align:center;margin-top:40px}
-.alert{padding:14px 18px;border-radius:2px;margin-bottom:20px;font-size:13px;font-weight:400}
-.alert-ok{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);color:var(--white)}
-.alert-err{background:rgba(255,60,60,.06);border:1px solid rgba(255,60,60,.2);color:#f28a8a}
+.alert{padding:14px 18px;border-radius:2px;margin-bottom:20px;font-size:13px;font-weight:400;display:flex;align-items:flex-start;gap:10px}
+.alert-ok{background:rgba(125,232,160,.06);border:1px solid rgba(125,232,160,.2);color:var(--ok)}
+.alert-err{background:rgba(242,138,138,.06);border:1px solid rgba(242,138,138,.2);color:var(--err)}
 
 /* ════ ADMIN ════ */
 .admin-login{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 64px)}
-.login-box{background:var(--black2);border:1px solid rgba(255,255,255,.1);border-radius:2px;padding:52px 44px;width:100%;max-width:400px;text-align:center}
+.login-box{background:var(--bk2);border:1px solid rgba(255,255,255,.1);border-radius:2px;padding:52px 44px;width:100%;max-width:400px;text-align:center}
 .login-box h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;letter-spacing:-.5px;margin-bottom:6px}
-.login-box .sub{color:var(--gray3);font-size:12px;font-weight:300;letter-spacing:1px;text-transform:uppercase;margin-bottom:32px}
+.login-box .sub{color:var(--g3);font-size:11px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:32px}
 .admin-wrap{padding:52px 64px;max-width:1400px;margin:0 auto}
 .admin-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.07)}
 .admin-top h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;letter-spacing:-.5px}
-.btn-lo{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--gray3);padding:9px 20px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .18s}
-.btn-lo:hover{border-color:rgba(255,80,80,.4);color:#f28a8a}
+.btn-lo{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--g3);padding:9px 20px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .18s}
+.btn-lo:hover{border-color:rgba(242,138,138,.4);color:var(--err)}
 .tabs{display:flex;gap:0;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.07)}
-.tab{padding:14px 28px;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--gray3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-left:none;border-right:none;border-top:none;font-family:'DM Sans',sans-serif;transition:all .18s}
-.tab:hover{color:var(--white)}
-.tab.on{color:var(--white);border-bottom-color:var(--white)}
+.tab{padding:13px 28px;font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--g3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-left:none;border-right:none;border-top:none;font-family:'DM Sans',sans-serif;transition:all .18s}
+.tab:hover{color:var(--wh)}
+.tab.on{color:var(--wh);border-bottom-color:var(--wh)}
 .tab-pane{display:none}.tab-pane.on{display:block}
 .add-form{max-width:720px}
 .car-table{width:100%;border-collapse:collapse}
-.car-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:2px;color:var(--gray3);text-transform:uppercase;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
-.car-table td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;vertical-align:middle}
-.car-table tr:hover td{background:rgba(255,255,255,.02)}
+.car-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:2px;color:var(--g3);text-transform:uppercase;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+.car-table td{padding:14px 14px;border-bottom:1px solid rgba(255,255,255,.04);font-size:14px;vertical-align:middle}
+.car-table tr:hover td{background:rgba(255,255,255,.018)}
 .tthumb{width:64px;height:44px;object-fit:cover;border-radius:2px;border:1px solid rgba(255,255,255,.08)}
 .tbadge{display:inline-block;padding:4px 10px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.tb-on{background:rgba(255,255,255,.07);color:var(--white)}
-.tb-off{background:rgba(255,255,255,.03);color:var(--gray3)}
-.tb-new{background:rgba(255,255,255,.06);color:var(--gray4)}
-.tb-seen{background:rgba(255,255,255,.03);color:var(--gray3)}
+.tb-on{background:rgba(255,255,255,.07);color:var(--wh)}
+.tb-off{background:rgba(255,255,255,.03);color:var(--g3)}
+.tb-new{background:rgba(255,255,255,.06);color:var(--g4)}
+.tb-seen{background:rgba(255,255,255,.03);color:var(--g2)}
 .act-btn{padding:7px 16px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid;background:transparent;margin-left:6px;transition:all .18s}
-.ab-w{border-color:rgba(255,255,255,.18);color:var(--gray4)}.ab-w:hover{border-color:var(--white);color:var(--white)}
-.ab-r{border-color:rgba(255,255,255,.08);color:var(--gray2)}.ab-r:hover{border-color:rgba(255,60,60,.4);color:#f28a8a}
-.sub-card{background:var(--black2);border:1px solid rgba(255,255,255,.06);border-radius:2px;padding:24px 28px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;transition:border-color .2s}
+.ab-w{border-color:rgba(255,255,255,.18);color:var(--g4)}.ab-w:hover{border-color:var(--wh);color:var(--wh)}
+.ab-r{border-color:rgba(255,255,255,.07);color:var(--g1)}.ab-r:hover{border-color:rgba(242,138,138,.4);color:var(--err)}
+.sub-card{background:var(--bk2);border:1px solid rgba(255,255,255,.06);border-radius:2px;padding:24px 28px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;transition:border-color .2s}
 .sub-card:hover{border-color:rgba(255,255,255,.14)}
 .sub-card h4{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;letter-spacing:-.2px;margin-bottom:4px}
 .sub-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px}
-.sub-meta span{font-size:12px;color:var(--gray3);font-weight:300}
-.sub-meta strong{color:var(--gray4);font-weight:500}
+.sub-meta span{font-size:12px;color:var(--g3);font-weight:300}
+.sub-meta strong{color:var(--g4);font-weight:500}
 .sub-actions{display:flex;flex-direction:column;gap:6px}
 
-/* FOOTER */
-footer{background:var(--black2);border-top:1px solid rgba(255,255,255,.07);padding:72px 64px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:48px}
+/* ════ FOOTER ════ */
+footer{background:var(--bk2);border-top:1px solid rgba(255,255,255,.07);padding:72px 64px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:48px}
 .flogo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--pure);margin-bottom:12px}
 .flogo span{font-style:italic;font-weight:300}
-footer p,footer a{font-size:13px;color:var(--gray3);text-decoration:none;display:block;margin-bottom:8px;transition:color .18s;font-weight:300;cursor:pointer}
-footer a:hover{color:var(--white)}
-footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:16px}
-.fbar{background:var(--black2);border-top:1px solid rgba(255,255,255,.05);padding:18px 64px;display:flex;justify-content:space-between}
-.fbar p{font-size:11px;color:var(--gray2);font-weight:300;letter-spacing:.5px}
+footer p,footer a{font-size:13px;color:var(--g3);text-decoration:none;display:block;margin-bottom:8px;transition:color .18s;font-weight:300}
+footer a:hover{color:var(--wh);cursor:pointer}
+footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:16px}
+.fbar{background:var(--bk2);border-top:1px solid rgba(255,255,255,.05);padding:18px 64px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.fbar p{font-size:11px;color:var(--g2);font-weight:300;letter-spacing:.3px}
+.fbar-links{display:flex;gap:20px}
+.fbar-links a{font-size:11px;color:var(--g2);text-decoration:none;letter-spacing:.5px;transition:color .18s;cursor:pointer}
+.fbar-links a:hover{color:var(--g4)}
 
+/* ════ MENTIONS LÉGALES ════ */
+.legal-wrap{max-width:820px;margin:0 auto;padding:72px 64px}
+.legal-wrap h1{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;letter-spacing:-1px;margin-bottom:8px}
+.legal-wrap .sub{color:var(--g3);font-size:13px;margin-bottom:48px;font-weight:300}
+.legal-wrap h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--wh);margin:36px 0 12px;padding-top:28px;border-top:1px solid rgba(255,255,255,.07)}
+.legal-wrap h2:first-of-type{border-top:none;padding-top:0}
+.legal-wrap p,.legal-wrap li{font-size:14px;color:var(--g3);line-height:1.8;font-weight:300;margin-bottom:10px}
+.legal-wrap ul{padding-left:20px}
+.legal-wrap strong{color:var(--g4);font-weight:500}
+
+/* ════ COOKIE BANNER ════ */
+#cookie-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:rgba(10,10,10,.97);
+  border-top:1px solid rgba(255,255,255,.1);
+  padding:28px 48px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  backdrop-filter:blur(16px);
+  transform:translateY(100%);
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+  flex-wrap:wrap;
+}
+#cookie-banner.show{transform:translateY(0)}
+.cb-text h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--pure);margin-bottom:6px}
+.cb-text p{font-size:13px;color:var(--g3);font-weight:300;line-height:1.6;max-width:580px}
+.cb-text p a{color:var(--g4);text-decoration:underline;cursor:pointer}
+.cb-actions{display:flex;gap:10px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.cb-btn{padding:11px 24px;border-radius:2px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .18s;white-space:nowrap}
+.cb-accept{background:var(--wh);color:var(--bk);border:none}.cb-accept:hover{background:var(--pure)}
+.cb-refuse{background:transparent;color:var(--g3);border:1px solid rgba(255,255,255,.15)}.cb-refuse:hover{color:var(--wh);border-color:rgba(255,255,255,.35)}
+.cb-settings{background:transparent;color:var(--g3);border:none;font-size:11px;letter-spacing:.5px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;padding:0}
+.cb-settings:hover{color:var(--wh)}
+
+/* COOKIE MODAL */
+#cookie-modal{
+  display:none;position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:24px;
+}
+#cookie-modal.open{display:flex}
+.cm-box{background:var(--bk2);border:1px solid rgba(255,255,255,.1);border-radius:2px;width:100%;max-width:560px;padding:44px 40px}
+.cm-box h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:-.5px;margin-bottom:6px}
+.cm-box .cm-sub{font-size:13px;color:var(--g3);font-weight:300;margin-bottom:32px;line-height:1.6}
+.cm-toggle-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.cm-toggle-row:last-of-type{border-bottom:none}
+.cm-toggle-info h4{font-size:14px;font-weight:600;color:var(--wh);margin-bottom:4px;font-family:'DM Sans',sans-serif}
+.cm-toggle-info p{font-size:12px;color:var(--g3);font-weight:300;line-height:1.5}
+/* toggle switch */
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--g1);border-radius:12px;transition:background .2s;cursor:pointer}
+.toggle input:checked+.toggle-track{background:var(--wh)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:var(--g3);border-radius:50%;transition:all .2s;pointer-events:none}
+.toggle input:checked~.toggle-thumb{left:23px;background:var(--bk)}
+.toggle-disabled .toggle-track{cursor:not-allowed;opacity:.4}
+.cm-footer{display:flex;justify-content:flex-end;gap:10px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07)}
+/* cookie preferences link */
+.cookie-link{font-size:11px;color:var(--g2);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;letter-spacing:.5px;transition:color .18s}
+.cookie-link:hover{color:var(--g4)}
+
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
   nav{padding:0 20px}
-  .nl:not(.nl-cta){display:none}
-  .hero-content,.sell-hero{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .burger{display:flex}
+  .hero-main{grid-template-columns:1fr}
   .hero-right{display:none}
   .hero-left{padding:52px 28px}
-  .sell-hero{padding:48px 28px;gap:40px}
+  .hero-bar{padding:16px 28px}
+  .hero-ticker{gap:16px}
+  .latest,.services{padding:60px 28px}
+  .sell-hero{grid-template-columns:1fr;padding:48px 28px;gap:40px}
   .svc-grid{grid-template-columns:1fr 1fr}
   .frow{grid-template-columns:1fr}
-  .services,.veh-top,.sell-form,.admin-wrap{padding-left:28px;padding-right:28px}
+  .veh-top,.veh-count{padding-left:28px;padding-right:28px}
   .vgrid{grid-template-columns:1fr}
+  .sell-form,.admin-wrap,.legal-wrap{padding:40px 28px}
   footer{grid-template-columns:1fr;padding:48px 28px}
-  .fbar{padding:16px 28px;flex-direction:column;gap:4px}
+  .fbar{padding:16px 28px}
+  .latest-grid{grid-template-columns:1fr}
+  #cookie-banner{padding:20px 24px}
+  .cm-box{padding:28px 24px}
 }
 </style>
 </head>
 <body>
 
+<!-- ── BACK TO TOP ── -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Retour en haut">↑</button>
+
+<!-- ── NAV ── -->
 <nav>
   <div class="logo" onclick="gp('home')">Shop <span>Ton</span> Auto</div>
   <div class="nav-links">
@@ -317,21 +348,26 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
     <a class="nl" onclick="gp('sell')" id="nl-sell">Vendre ma voiture</a>
     <a class="nl nl-cta" onclick="gp('admin')" id="nl-admin">Espace Pro</a>
   </div>
+  <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mob-link" onclick="gp('home');closeMenu()">Accueil</div>
+  <div class="mob-link" onclick="gp('vehicles');closeMenu()">Véhicules</div>
+  <div class="mob-link" onclick="gp('sell');closeMenu()">Vendre ma voiture</div>
+  <div class="mob-link" onclick="gp('admin');closeMenu()">Espace Pro</div>
+</div>
 
-<!-- ══ ACCUEIL ══ -->
+<!-- ════ ACCUEIL ════ -->
 <div class="page active" id="page-home">
   <div class="hero">
     <div class="hero-bg"></div>
-    <div class="hero-grid-lines"></div>
-    <div class="hero-content">
+    <div class="hero-grid"></div>
+    <div class="hero-main">
       <div class="hero-left">
-        <div class="hero-eyebrow">Concession automobile</div>
-        <h1 class="hero-h1">
-          L'automobile,<br>
-          <em>autrement</em><br>
-          <strong>bien faite.</strong>
-        </h1>
+        <div class="hero-ey">Concession automobile</div>
+        <h1 class="hero-h1">L'automobile,<br><em>autrement</em><br><strong>bien faite.</strong></h1>
         <p class="hero-sub">Des véhicules sélectionnés avec exigence. Des prix transparents. Un service sans compromis — à l'achat comme à la vente.</p>
         <div class="hero-actions">
           <button class="btn-w" onclick="gp('vehicles')">Voir le catalogue</button>
@@ -339,9 +375,7 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
         </div>
       </div>
       <div class="hero-right">
-        <div class="hero-right-top">
-          <div class="hero-num" id="hn">00</div>
-        </div>
+        <div class="hero-num" id="hn">00</div>
         <div class="hero-stats">
           <div class="hs"><div class="hs-n" id="hcount">0</div><div class="hs-l">Véhicules dispo</div></div>
           <div class="hs"><div class="hs-n">48h</div><div class="hs-l">Réponse rachat</div></div>
@@ -349,21 +383,33 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
         </div>
       </div>
     </div>
-    <div class="hero-bottom">
+    <div class="hero-bar">
       <div class="hero-ticker">
-        <div class="ticker-item">🚗 <span>Vente de véhicules</span></div>
-        <div class="ticker-item ticker-sep">—</div>
-        <div class="ticker-item">💸 <span>Rachat garanti</span></div>
-        <div class="ticker-item ticker-sep">—</div>
-        <div class="ticker-item">📋 <span>Dossier complet</span></div>
-        <div class="ticker-item ticker-sep">—</div>
-        <div class="ticker-item">✦ <span>Prix transparents</span></div>
+        <div class="ti">🚗 <span>Vente de véhicules</span></div>
+        <div class="ti ti-sep">—</div>
+        <div class="ti">💸 <span>Rachat garanti</span></div>
+        <div class="ti ti-sep">—</div>
+        <div class="ti">📋 <span>Dossier complet</span></div>
+        <div class="ti ti-sep">—</div>
+        <div class="ti">✦ <span>Prix transparents</span></div>
       </div>
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray2)">Est. 2025</div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--g2)">Est. 2025</div>
     </div>
   </div>
 
-  <div class="services">
+  <!-- DERNIÈRES VOITURES -->
+  <div class="latest reveal">
+    <div class="latest-head">
+      <h2>Dernières arrivées</h2>
+      <a onclick="gp('vehicles')">Tout voir →</a>
+    </div>
+    <div class="latest-grid" id="latest-grid">
+      <div class="latest-empty">Le stock arrive bientôt. Revenez nous voir !</div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <div class="services reveal">
     <div class="sec-head">
       <div>
         <div class="sec-label">Ce que nous faisons</div>
@@ -372,10 +418,10 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
       <p class="sec-sub">Une concession qui commence avec les bonnes valeurs — qualité, honnêteté, réactivité.</p>
     </div>
     <div class="svc-grid">
-      <div class="svc"><div class="svc-num">01</div><h3>Vente de véhicules</h3><p>Chaque voiture est contrôlée et sélectionnée avant d'être proposée. Pas de mauvaises surprises.</p></div>
-      <div class="svc"><div class="svc-num">02</div><h3>Rachat de votre auto</h3><p>On rachète votre véhicule au juste prix. Formulaire en ligne, réponse sous 48 heures.</p></div>
-      <div class="svc"><div class="svc-num">03</div><h3>Accompagnement</h3><p>Carte grise, financement, historique — nous gérons chaque étape de A à Z.</p></div>
-      <div class="svc"><div class="svc-num">04</div><h3>Conseil sans pression</h3><p>Nous sommes là pour vous guider, pas pour vous forcer. Prenez le temps qu'il vous faut.</p></div>
+      <div class="svc"><div class="svc-num">01</div><h3>Vente de véhicules</h3><p>Chaque voiture est contrôlée avant d'être proposée. Pas de mauvaises surprises.</p></div>
+      <div class="svc"><div class="svc-num">02</div><h3>Rachat de votre auto</h3><p>On rachète votre véhicule au juste prix. Réponse sous 48 heures.</p></div>
+      <div class="svc"><div class="svc-num">03</div><h3>Accompagnement</h3><p>Carte grise, financement, historique — de A à Z.</p></div>
+      <div class="svc"><div class="svc-num">04</div><h3>Conseil sans pression</h3><p>Nous sommes là pour guider, pas pour forcer.</p></div>
     </div>
   </div>
 
@@ -399,11 +445,15 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
   </footer>
   <div class="fbar">
     <p>© 2025 Shop Ton Auto — Tous droits réservés.</p>
-    <p>Conçu avec exigence.</p>
+    <div class="fbar-links">
+      <a onclick="gp('legal')">Mentions légales</a>
+      <a onclick="gp('legal')">Politique de confidentialité</a>
+      <button class="cookie-link" onclick="openCookieModal()">Gérer mes cookies</button>
+    </div>
   </div>
 </div>
 
-<!-- ══ VÉHICULES ══ -->
+<!-- ════ VÉHICULES ════ -->
 <div class="page" id="page-vehicles">
   <div class="veh-top">
     <div class="sec-label">Catalogue</div>
@@ -431,16 +481,17 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
       </select>
     </div>
   </div>
+  <div class="veh-count" id="veh-count">0 véhicule</div>
   <div class="vgrid" id="vgrid"></div>
 </div>
 
-<!-- ══ VENDRE ══ -->
+<!-- ════ VENDRE ════ -->
 <div class="page" id="page-sell">
   <div class="sell-hero">
     <div>
       <div class="sec-label">Rachat</div>
       <h1>On rachète<br><em>votre voiture.</em></h1>
-      <p>Remplissez le formulaire ci-dessous. Nous étudions votre dossier et revenons vers vous sous 48h avec une offre — sans engagement de votre part.</p>
+      <p>Remplissez le formulaire ci-dessous. Nous étudions votre dossier et revenons sous 48h avec une offre — sans engagement.</p>
     </div>
     <div class="steps">
       <div class="step"><div class="step-n">01</div><div class="step-t"><h4>Décrivez votre véhicule</h4><p>Marque, modèle, kilométrage, état général.</p></div></div>
@@ -456,16 +507,16 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
       <div class="fgrp"><label>Modèle *</label><input type="text" id="s-md" placeholder="Ex: Clio, Série 3..."></div>
     </div>
     <div class="frow">
-      <div class="fgrp"><label>Année *</label><input type="number" id="s-yr" placeholder="2019"></div>
-      <div class="fgrp"><label>Kilométrage *</label><input type="number" id="s-km" placeholder="85 000"></div>
+      <div class="fgrp"><label>Année *</label><input type="number" id="s-yr" placeholder="2019" min="1980" max="2025"></div>
+      <div class="fgrp"><label>Kilométrage *</label><input type="number" id="s-km" placeholder="85 000" min="0"></div>
     </div>
     <div class="frow">
       <div class="fgrp"><label>Carburant</label><select id="s-fu"><option value="">—</option><option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option><option>GPL</option></select></div>
       <div class="fgrp"><label>Boîte de vitesse</label><select id="s-gb"><option value="">—</option><option>Manuelle</option><option>Automatique</option></select></div>
     </div>
     <div class="fgrp"><label>État général</label><select id="s-co"><option value="">—</option><option>Excellent — Comme neuf</option><option>Bon — Usure normale</option><option>Moyen — Réparations à prévoir</option><option>Accidenté</option></select></div>
-    <div class="fgrp"><label>Informations complémentaires</label><textarea id="s-no" placeholder="Options, révisions effectuées, historique, nombre de propriétaires..."></textarea></div>
-    <div class="fgrp"><label>Prix souhaité (optionnel)</label><input type="number" id="s-pr" placeholder="Ex : 8 500 €"></div>
+    <div class="fgrp"><label>Informations complémentaires</label><textarea id="s-no" placeholder="Options, révisions effectuées, nombre de propriétaires..."></textarea></div>
+    <div class="fgrp"><label>Prix souhaité (optionnel)</label><input type="number" id="s-pr" placeholder="Ex : 8 500"></div>
     <div class="fsec">Vos coordonnées</div>
     <div class="frow">
       <div class="fgrp"><label>Prénom *</label><input type="text" id="s-fn" placeholder="Prénom"></div>
@@ -475,11 +526,11 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
       <div class="fgrp"><label>Téléphone *</label><input type="tel" id="s-tel" placeholder="06 XX XX XX XX"></div>
       <div class="fgrp"><label>Email</label><input type="email" id="s-em" placeholder="vous@email.fr"></div>
     </div>
-    <div class="fsub"><button class="btn-w" style="padding:16px 48px;font-size:13px;letter-spacing:2px" onclick="submitSell()">Envoyer ma demande</button></div>
+    <div class="fsub"><button class="btn-w" style="padding:16px 48px;font-size:12px;letter-spacing:2px" onclick="submitSell()">Envoyer ma demande</button></div>
   </div>
 </div>
 
-<!-- ══ ADMIN ══ -->
+<!-- ════ ADMIN ════ -->
 <div class="page" id="page-admin">
   <div class="admin-login" id="adm-login">
     <div class="login-box">
@@ -491,10 +542,9 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
       </div>
       <div id="adm-err" style="display:none" class="alert alert-err">Mot de passe incorrect.</div>
       <button class="btn-w" style="width:100%;padding:14px;letter-spacing:1.5px;font-size:12px;text-transform:uppercase" onclick="doLogin()">Se connecter</button>
-      <p style="margin-top:16px;font-size:11px;color:var(--gray2);letter-spacing:.5px">Défaut : <strong style="color:var(--gray4)">admin123</strong></p>
+      <p style="margin-top:16px;font-size:11px;color:var(--g2);letter-spacing:.3px">Défaut : <strong style="color:var(--g4)">admin123</strong></p>
     </div>
   </div>
-
   <div id="adm-panel" style="display:none">
     <div class="admin-wrap">
       <div class="admin-top">
@@ -503,11 +553,9 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
       </div>
       <div class="tabs">
         <button class="tab on" onclick="stab('add')">Ajouter un véhicule</button>
-        <button class="tab" onclick="stab('inv')">Catalogue &nbsp;<span id="tc" style="opacity:.5">0</span></button>
-        <button class="tab" onclick="stab('subs')">Demandes de rachat &nbsp;<span id="sc" style="opacity:.5">0</span></button>
+        <button class="tab" onclick="stab('inv')">Catalogue &nbsp;<span id="tc" style="opacity:.4">0</span></button>
+        <button class="tab" onclick="stab('subs')">Demandes de rachat &nbsp;<span id="sc" style="opacity:.4">0</span></button>
       </div>
-
-      <!-- ADD -->
       <div class="tab-pane on" id="tp-add">
         <div class="add-form">
           <div id="add-alert"></div>
@@ -527,9 +575,9 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
             <div class="fgrp"><label>Boîte de vitesse</label><select id="a-gb"><option>Manuelle</option><option>Automatique</option></select></div>
             <div class="fgrp"><label>Couleur</label><input type="text" id="a-co" placeholder="Noir Métallisé"></div>
           </div>
-          <div class="fgrp"><label>Description / Options</label><textarea id="a-de" placeholder="GPS, cuir, caméra de recul, 1er main, carnet d'entretien..."></textarea></div>
+          <div class="fgrp"><label>Description / Options</label><textarea id="a-de" placeholder="GPS, cuir, caméra de recul, 1er main..."></textarea></div>
           <div class="fgrp">
-            <label>Photos du véhicule <span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--gray2)">(max 8 — la 1ère sera la principale)</span></label>
+            <label>Photos du véhicule <span style="font-weight:300;text-transform:none;letter-spacing:0;color:var(--g2)">(max 8 — la 1ère sera la principale)</span></label>
             <div class="upload-zone">
               <input type="file" id="a-ph" accept="image/*" multiple onchange="onPhotos(event)">
               <div class="uico">📷</div>
@@ -540,17 +588,13 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
           <button class="btn-w" onclick="addCar()">Publier le véhicule</button>
         </div>
       </div>
-
-      <!-- INVENTORY -->
       <div class="tab-pane" id="tp-inv">
-        <div id="inv-empty" class="empty-box" style="display:none;background:transparent"><h3>Catalogue vide</h3><p>Ajoutez votre premier véhicule.</p></div>
+        <div id="inv-empty" class="empty-box" style="display:none;background:transparent"><h3>Catalogue vide</h3><p>Ajoutez votre premier véhicule ci-dessus.</p></div>
         <table class="car-table" id="inv-table">
           <thead><tr><th>Photo</th><th>Véhicule</th><th>Année</th><th>Km</th><th>Énergie</th><th>Prix</th><th>Statut</th><th>Actions</th></tr></thead>
           <tbody id="inv-body"></tbody>
         </table>
       </div>
-
-      <!-- SUBS -->
       <div class="tab-pane" id="tp-subs">
         <div id="subs-empty" class="empty-box" style="display:none;background:transparent"><h3>Aucune demande</h3><p>Les demandes de rachat apparaîtront ici.</p></div>
         <div id="subs-list"></div>
@@ -559,12 +603,127 @@ footer h5{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:upper
   </div>
 </div>
 
+<!-- ════ MENTIONS LÉGALES ════ -->
+<div class="page" id="page-legal">
+  <div class="legal-wrap reveal">
+    <h1>Mentions légales &amp; Confidentialité</h1>
+    <p class="sub">Dernière mise à jour : 2025</p>
+
+    <h2>1. Éditeur du site</h2>
+    <p><strong>Shop Ton Auto</strong> — Concession automobile<br>
+    Adresse : À compléter<br>
+    Téléphone : 06 XX XX XX XX<br>
+    Email : contact@shoptonAuto.fr</p>
+
+    <h2>2. Données personnelles collectées</h2>
+    <p>Dans le cadre des formulaires de rachat, nous collectons les informations suivantes :</p>
+    <ul>
+      <li>Nom et prénom</li>
+      <li>Numéro de téléphone</li>
+      <li>Adresse email (optionnel)</li>
+      <li>Informations relatives au véhicule proposé à la vente</li>
+    </ul>
+    <p>Ces données sont utilisées <strong>exclusivement</strong> pour traiter votre demande de rachat et vous recontacter. Elles ne sont ni revendues, ni partagées avec des tiers.</p>
+
+    <h2>3. Durée de conservation</h2>
+    <p>Vos données sont conservées le temps nécessaire au traitement de votre demande, et supprimées au plus tard <strong>3 ans</strong> après le dernier contact.</p>
+
+    <h2>4. Vos droits</h2>
+    <p>Conformément au <strong>RGPD</strong> (Règlement Général sur la Protection des Données) et à la loi Informatique et Libertés, vous disposez des droits suivants :</p>
+    <ul>
+      <li>Droit d'accès à vos données</li>
+      <li>Droit de rectification</li>
+      <li>Droit à l'effacement (« droit à l'oubli »)</li>
+      <li>Droit d'opposition au traitement</li>
+      <li>Droit à la portabilité</li>
+    </ul>
+    <p>Pour exercer ces droits, contactez-nous à : <strong>contact@shoptonAuto.fr</strong></p>
+
+    <h2>5. Cookies</h2>
+    <p>Ce site utilise des cookies fonctionnels indispensables à son bon fonctionnement (sauvegarde du catalogue et des demandes de rachat). Aucun cookie publicitaire ni traceur tiers n'est utilisé.</p>
+    <ul>
+      <li><strong>Cookies essentiels :</strong> stockage local des données du catalogue et des formulaires. Nécessaires au fonctionnement du site, ils ne peuvent pas être refusés.</li>
+      <li><strong>Cookies analytiques :</strong> désactivés par défaut, ils peuvent être activés avec votre consentement.</li>
+    </ul>
+    <p>Vous pouvez gérer vos préférences à tout moment via le lien en bas de page.</p>
+
+    <h2>6. Hébergement</h2>
+    <p>Ce site est un fichier HTML local. Aucun hébergement tiers n'est impliqué dans cette version.</p>
+
+    <h2>7. Contact</h2>
+    <p>Pour toute question relative à la protection de vos données : <strong>contact@shoptonAuto.fr</strong></p>
+  </div>
+  <footer style="margin-top:0">
+    <div><div class="flogo">Shop <span>Ton</span> Auto</div></div>
+    <div><h5>Navigation</h5><a onclick="gp('home')">Accueil</a><a onclick="gp('vehicles')">Véhicules</a></div>
+    <div><h5>Contact</h5><p>📞 06 XX XX XX XX</p><p>✉️ contact@shoptonAuto.fr</p></div>
+  </footer>
+  <div class="fbar">
+    <p>© 2025 Shop Ton Auto</p>
+    <div class="fbar-links">
+      <button class="cookie-link" onclick="openCookieModal()">Gérer mes cookies</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ COOKIE BANNER ════ -->
+<div id="cookie-banner">
+  <div class="cb-text">
+    <h3>Nous respectons votre vie privée.</h3>
+    <p>Ce site utilise des cookies pour mémoriser le catalogue et les demandes de rachat. Consultez notre <a onclick="gp('legal')">politique de confidentialité</a> pour en savoir plus.</p>
+  </div>
+  <div class="cb-actions">
+    <button class="cb-btn cb-accept" onclick="acceptCookies()">Tout accepter</button>
+    <button class="cb-btn cb-refuse" onclick="refuseCookies()">Refuser</button>
+    <button class="cb-settings" onclick="openCookieModal()">Personnaliser</button>
+  </div>
+</div>
+
+<!-- ════ COOKIE MODAL ════ -->
+<div id="cookie-modal">
+  <div class="cm-box">
+    <h2>Préférences cookies</h2>
+    <p class="cm-sub">Gérez les cookies que ce site peut utiliser. Les cookies essentiels sont obligatoires pour le fonctionnement du site.</p>
+
+    <div class="cm-toggle-row">
+      <div class="cm-toggle-info">
+        <h4>Cookies essentiels</h4>
+        <p>Sauvegarde du catalogue et des formulaires. Indispensables — ne peuvent pas être désactivés.</p>
+      </div>
+      <label class="toggle toggle-disabled">
+        <input type="checkbox" checked disabled>
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="cm-toggle-row">
+      <div class="cm-toggle-info">
+        <h4>Cookies analytiques</h4>
+        <p>Nous permettent de comprendre comment le site est utilisé afin de l'améliorer.</p>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="ck-analytics">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+
+    <div class="cm-footer">
+      <button class="btn-brd" style="padding:11px 24px;font-size:11px;letter-spacing:1.5px" onclick="closeCookieModal()">Annuler</button>
+      <button class="btn-w" style="padding:11px 24px;font-size:11px;letter-spacing:1.5px" onclick="savePrefs()">Enregistrer mes choix</button>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ══ DATA ══ */
 const gc=()=>{try{return JSON.parse(localStorage.getItem('sta_c')||'[]')}catch{return[]}};
 const gs=()=>{try{return JSON.parse(localStorage.getItem('sta_s')||'[]')}catch{return[]}};
 const sc=v=>localStorage.setItem('sta_c',JSON.stringify(v));
 const ss=v=>localStorage.setItem('sta_s',JSON.stringify(v));
 
+/* ══ NAV ══ */
 function gp(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nl').forEach(a=>a.classList.remove('on'));
@@ -574,17 +733,49 @@ function gp(p){
   if(p==='vehicles')renderV();
   if(p==='home')updHome();
   if(p==='admin')refreshAdmin();
+  revealCheck();
 }
-function updHome(){
-  const n=gc().filter(c=>c.s==='on').length;
-  document.getElementById('hcount').textContent=n;
-  document.getElementById('hn').textContent=String(n).padStart(2,'0');
+function toggleMenu(){
+  const b=document.getElementById('burger');
+  const m=document.getElementById('mobile-menu');
+  b.classList.toggle('open');m.classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('burger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
 }
 
-/* ── VEHICLES ── */
+/* ══ SCROLL REVEAL + BACK TO TOP ══ */
+function revealCheck(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight-80)el.classList.add('visible');
+  });
+  const btt=document.getElementById('btt');
+  btt.classList.toggle('show',window.scrollY>400);
+}
+window.addEventListener('scroll',revealCheck,{passive:true});
+
+/* ══ HOME ══ */
+function updHome(){
+  const cars=gc().filter(c=>c.s==='on');
+  const n=cars.length;
+  document.getElementById('hcount').textContent=n;
+  document.getElementById('hn').textContent=String(n).padStart(2,'0');
+  renderLatest(cars);
+}
+function renderLatest(cars){
+  const g=document.getElementById('latest-grid');
+  const recent=cars.slice(-3).reverse();
+  if(!recent.length){g.innerHTML='<div class="latest-empty">Le stock arrive bientôt. Revenez nous voir !</div>';return;}
+  g.innerHTML=recent.map(c=>carCardHtml(c)).join('');
+}
+
+/* ══ VEHICLES ══ */
 function renderV(){
   const g=document.getElementById('vgrid');
-  const q=document.getElementById('fi-q').value.toLowerCase();
+  const cnt=document.getElementById('veh-count');
+  const q=(document.getElementById('fi-q').value||'').toLowerCase();
   const b=+document.getElementById('fi-b').value||0;
   const y=+document.getElementById('fi-y').value||0;
   const f=document.getElementById('fi-f').value;
@@ -593,47 +784,62 @@ function renderV(){
   if(b)cars=cars.filter(c=>c.pr<=b);
   if(y)cars=cars.filter(c=>c.yr>=y);
   if(f)cars=cars.filter(c=>c.fu===f);
+  cnt.textContent=cars.length+' véhicule'+(cars.length>1?'s':'');
   if(!cars.length){
-    g.innerHTML='<div class="empty-box"><h3>Aucun véhicule trouvé</h3><p>Modifiez vos critères de recherche.</p></div>';
+    g.innerHTML=`<div class="empty-box">
+      <h3>Aucun véhicule trouvé</h3>
+      <p>Essayez d'autres critères de recherche.</p>
+      <button class="btn-brd" onclick="resetFilters()" style="margin-top:8px">Réinitialiser les filtres</button>
+    </div>`;
     return;
   }
-  g.innerHTML=cars.map(c=>`
-    <div class="car-card">
-      <div class="car-img-box">
-        ${c.ph&&c.ph.length?`
-          <div class="car-slider" id="sl-${c.id}">
-            <img src="${c.ph[0]}" id="sl-img-${c.id}" alt="">
-            ${c.ph.length>1?`
-              <button class="sl-btn sl-prev" onclick="slide(${c.id},-1,event)">&#8249;</button>
-              <button class="sl-btn sl-next" onclick="slide(${c.id},1,event)">&#8250;</button>
-              <div class="sl-dots" id="sl-dots-${c.id}">${c.ph.map((_,i)=>`<button class="sl-dot${i===0?' on':''}" onclick="slideTo(${c.id},${i},event)"></button>`).join('')}</div>
-              <span class="sl-cnt" id="sl-cnt-${c.id}">1 / ${c.ph.length}</span>
-            `:''}
-          </div>`:`
-          <div class="car-no-img">
-            <svg width="56" height="36" viewBox="0 0 60 40" fill="none"><path d="M8 30h44M10 30l4-12h32l4 12M18 18l3-8h18l3 8M6 30c0 2.2 1.8 4 4 4s4-1.8 4-4M46 30c0 2.2 1.8 4 4 4s4-1.8 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span>Pas de photo</span>
-          </div>`}
-        ${isNew(c.at)?'<div class="badge-new">Nouveau</div>':''}
+  g.innerHTML=cars.map(c=>carCardHtml(c)).join('');
+}
+function resetFilters(){
+  document.getElementById('fi-q').value='';
+  document.getElementById('fi-b').value='';
+  document.getElementById('fi-y').value='';
+  document.getElementById('fi-f').value='';
+  renderV();
+}
+
+function carCardHtml(c){
+  return`<div class="car-card">
+    <div class="car-img-box">
+      ${c.ph&&c.ph.length?`
+        <div class="car-slider" id="sl-${c.id}">
+          <img src="${c.ph[0]}" id="sl-img-${c.id}" alt="${c.mk} ${c.md}">
+          ${c.ph.length>1?`
+            <button class="sl-btn sl-prev" onclick="slide(${c.id},-1,event)">&#8249;</button>
+            <button class="sl-btn sl-next" onclick="slide(${c.id},1,event)">&#8250;</button>
+            <div class="sl-dots" id="sl-dots-${c.id}">${c.ph.map((_,i)=>`<button class="sl-dot${i===0?' on':''}" onclick="slideTo(${c.id},${i},event)"></button>`).join('')}</div>
+            <span class="sl-cnt" id="sl-cnt-${c.id}">1 / ${c.ph.length}</span>
+          `:''}
+        </div>`:`
+        <div class="car-no-img">
+          <svg width="56" height="36" viewBox="0 0 60 40" fill="none"><path d="M8 30h44M10 30l4-12h32l4 12M18 18l3-8h18l3 8M6 30c0 2.2 1.8 4 4 4s4-1.8 4-4M46 30c0 2.2 1.8 4 4 4s4-1.8 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>Pas de photo</span>
+        </div>`}
+      ${isNew(c.at)?'<div class="badge-new">Nouveau</div>':''}
+    </div>
+    <div class="car-body">
+      <div class="car-brand">${c.mk}</div>
+      <div class="car-name">${c.md}</div>
+      <div class="car-yr">${c.yr}${c.gb?' · '+c.gb:''}</div>
+      <div class="car-chips">
+        ${c.km?`<span class="chip">${c.km.toLocaleString('fr-FR')} km</span>`:''}
+        ${c.fu?`<span class="chip">${c.fu}</span>`:''}
+        ${c.co?`<span class="chip">${c.co}</span>`:''}
       </div>
-      <div class="car-body">
-        <div class="car-brand">${c.mk}</div>
-        <div class="car-name">${c.md}</div>
-        <div class="car-yr">${c.yr}${c.gb?' · '+c.gb:''}</div>
-        <div class="car-chips">
-          ${c.km?`<span class="chip">${c.km.toLocaleString('fr-FR')} km</span>`:''}
-          ${c.fu?`<span class="chip">${c.fu}</span>`:''}
-          ${c.co?`<span class="chip">${c.co}</span>`:''}
-        </div>
-        ${c.de?`<p style="font-size:12px;color:var(--gray3);margin-bottom:18px;line-height:1.6;font-weight:300">${c.de.slice(0,90)}${c.de.length>90?'…':''}</p>`:''}
-        <div class="car-foot">
-          <div class="car-price">${Number(c.pr).toLocaleString('fr-FR')} <small>€</small></div>
-          <button class="btn-line" onclick="gp('sell')">Contacter</button>
-        </div>
+      ${c.de?`<p style="font-size:12px;color:var(--g3);margin-bottom:16px;line-height:1.6;font-weight:300">${c.de.slice(0,90)}${c.de.length>90?'…':''}</p>`:''}
+      <div class="car-foot">
+        <div class="car-price">${Number(c.pr).toLocaleString('fr-FR')} <small>€</small></div>
+        <button class="btn-line" onclick="gp('sell')">Contacter</button>
       </div>
     </div>
-  `).join('');
+  </div>`;
 }
+
 const si={};
 function isNew(d){return d&&(Date.now()-new Date(d))<7*86400000}
 function slide(id,dir,e){
@@ -651,38 +857,46 @@ function doSlide(id,ph){
   const cnt=document.getElementById('sl-cnt-'+id);if(cnt)cnt.textContent=(i+1)+' / '+ph.length;
 }
 
-/* ── SELL ── */
+/* ══ SELL ══ */
+function reqFields(){return[
+  {id:'s-mk',label:'Marque'},{id:'s-md',label:'Modèle'},
+  {id:'s-yr',label:'Année'},{id:'s-km',label:'Kilométrage'},
+  {id:'s-fn',label:'Prénom'},{id:'s-ln',label:'Nom'},{id:'s-tel',label:'Téléphone'}
+];}
 function submitSell(){
-  const mk=document.getElementById('s-mk').value.trim();
-  const md=document.getElementById('s-md').value.trim();
-  const yr=document.getElementById('s-yr').value;
-  const km=document.getElementById('s-km').value;
-  const fn=document.getElementById('s-fn').value.trim();
-  const ln=document.getElementById('s-ln').value.trim();
-  const tel=document.getElementById('s-tel').value.trim();
+  let ok=true;
+  document.querySelectorAll('#page-sell .fgrp input').forEach(el=>{el.classList.remove('err');const em=el.parentElement.querySelector('.err-msg');if(em)em.remove();});
+  reqFields().forEach(f=>{
+    const el=document.getElementById(f.id);
+    if(!el.value.trim()){
+      el.classList.add('err');
+      const sp=document.createElement('span');sp.className='err-msg';sp.textContent='Ce champ est requis.';
+      el.parentElement.appendChild(sp);ok=false;
+    }
+  });
   const al=document.getElementById('sell-alert');
-  if(!mk||!md||!yr||!km||!fn||!ln||!tel){
-    al.innerHTML='<div class="alert alert-err">Veuillez remplir tous les champs obligatoires (*).</div>';
-    al.scrollIntoView({behavior:'smooth'});return;
-  }
+  if(!ok){al.innerHTML='<div class="alert alert-err">⚠ Veuillez corriger les erreurs ci-dessous.</div>';al.scrollIntoView({behavior:'smooth'});return;}
   const sub={
     id:Date.now(),dt:new Date().toLocaleDateString('fr-FR'),
-    mk,md,yr:+yr,km:+km,
+    mk:document.getElementById('s-mk').value.trim(),
+    md:document.getElementById('s-md').value.trim(),
+    yr:+document.getElementById('s-yr').value,
+    km:+document.getElementById('s-km').value,
     fu:document.getElementById('s-fu').value,
     gb:document.getElementById('s-gb').value,
     co:document.getElementById('s-co').value,
     no:document.getElementById('s-no').value,
     pr:document.getElementById('s-pr').value,
-    contact:{fn,ln,tel,em:document.getElementById('s-em').value},
+    contact:{fn:document.getElementById('s-fn').value.trim(),ln:document.getElementById('s-ln').value.trim(),tel:document.getElementById('s-tel').value.trim(),em:document.getElementById('s-em').value},
     st:'new'
   };
   const subs=gs();subs.unshift(sub);ss(subs);
-  al.innerHTML='<div class="alert alert-ok">Votre demande a bien été transmise. Nous vous contacterons sous 48 heures.</div>';
+  al.innerHTML='<div class="alert alert-ok">✓ Votre demande a bien été transmise. Nous vous contacterons sous 48 heures.</div>';
   al.scrollIntoView({behavior:'smooth'});
   ['s-mk','s-md','s-yr','s-km','s-fu','s-gb','s-co','s-no','s-pr','s-fn','s-ln','s-tel','s-em'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
 }
 
-/* ── PHOTOS ── */
+/* ══ PHOTOS ══ */
 let pp=[];
 function onPhotos(ev){
   const files=Array.from(ev.target.files).slice(0,8-pp.length);
@@ -692,16 +906,11 @@ function onPhotos(ev){
 }
 function showP(){
   const el=document.getElementById('previews');if(!el)return;
-  el.innerHTML=pp.map((s,i)=>`
-    <div class="prev-item">
-      <img src="${s}">
-      <button class="prev-del" onclick="delP(${i})">×</button>
-      ${i===0?'<div class="prev-main">Principal</div>':''}
-    </div>`).join('');
+  el.innerHTML=pp.map((s,i)=>`<div class="prev-item"><img src="${s}"><button class="prev-del" onclick="delP(${i})">×</button>${i===0?'<div class="prev-main">Principal</div>':''}</div>`).join('');
 }
 function delP(i){pp.splice(i,1);showP();}
 
-/* ── ADMIN ── */
+/* ══ ADMIN ══ */
 let logged=false;
 function doLogin(){
   if(document.getElementById('adm-pwd').value==='admin123'){
@@ -739,90 +948,99 @@ function addCar(){
   const pr=document.getElementById('a-pr').value;
   const al=document.getElementById('add-alert');
   if(!mk||!md||!yr||!pr){al.innerHTML='<div class="alert alert-err">Remplissez les champs obligatoires (*).</div>';return;}
-  const car={
-    id:Date.now(),mk,md,yr:+yr,pr:+pr,
-    km:+document.getElementById('a-km').value||0,
-    fu:document.getElementById('a-fu').value,
-    gb:document.getElementById('a-gb').value,
-    co:document.getElementById('a-co').value,
-    de:document.getElementById('a-de').value,
-    ph:pp.slice(),s:'on',at:new Date().toISOString()
-  };
+  const car={id:Date.now(),mk,md,yr:+yr,pr:+pr,km:+document.getElementById('a-km').value||0,fu:document.getElementById('a-fu').value,gb:document.getElementById('a-gb').value,co:document.getElementById('a-co').value,de:document.getElementById('a-de').value,ph:pp.slice(),s:'on',at:new Date().toISOString()};
   const cars=gc();cars.push(car);sc(cars);
-  al.innerHTML=`<div class="alert alert-ok">${mk} ${md} publié avec succès${pp.length?' ('+pp.length+' photo'+(pp.length>1?'s':'')+')':''}.</div>`;
+  al.innerHTML=`<div class="alert alert-ok">✓ ${mk} ${md} publié avec succès${pp.length?' · '+pp.length+' photo'+(pp.length>1?'s':''):''}.</div>`;
   ['a-mk','a-md','a-yr','a-pr','a-km','a-co','a-de'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   pp=[];document.getElementById('previews').innerHTML='';document.getElementById('a-ph').value='';
   setTimeout(()=>al.innerHTML='',5000);refreshAdmin();
 }
-function toggleCar(id){
-  const cars=gc();const c=cars.find(x=>x.id===id);
-  if(c){c.s=c.s==='on'?'off':'on';sc(cars);refreshAdmin();}
-}
-function delCar(id){
-  if(!confirm('Supprimer ce véhicule définitivement ?'))return;
-  sc(gc().filter(c=>c.id!==id));refreshAdmin();
-}
+function toggleCar(id){const cars=gc();const c=cars.find(x=>x.id===id);if(c){c.s=c.s==='on'?'off':'on';sc(cars);refreshAdmin();}}
+function delCar(id){if(!confirm('Supprimer ce véhicule définitivement ?'))return;sc(gc().filter(c=>c.id!==id));refreshAdmin();}
 function buildInv(cars){
   const body=document.getElementById('inv-body');
   const empty=document.getElementById('inv-empty');
   const table=document.getElementById('inv-table');
   if(!cars.length){empty.style.display='block';table.style.display='none';return;}
   empty.style.display='none';table.style.display='table';
-  body.innerHTML=cars.map(c=>`
-    <tr>
-      <td>${c.ph&&c.ph.length?`<img class="tthumb" src="${c.ph[0]}">`:'<span style="color:var(--gray2)">—</span>'}</td>
-      <td>
-        <strong style="font-family:\'Cormorant Garamond\',serif;font-size:17px;font-weight:400">${c.mk} ${c.md}</strong>
-        ${c.ph&&c.ph.length>1?`<br><span style="font-size:11px;color:var(--gray3)">${c.ph.length} photos</span>`:''}
-      </td>
-      <td>${c.yr}</td>
-      <td>${c.km?c.km.toLocaleString('fr-FR')+' km':'—'}</td>
-      <td>${c.fu||'—'}</td>
-      <td><strong style="font-family:\'Cormorant Garamond\',serif;font-size:18px;font-weight:400">${Number(c.pr).toLocaleString('fr-FR')} €</strong></td>
-      <td><span class="tbadge ${c.s==='on'?'tb-on':'tb-off'}">${c.s==='on'?'En vente':'Vendu'}</span></td>
-      <td style="white-space:nowrap">
-        <button class="act-btn ab-w" onclick="toggleCar(${c.id})">${c.s==='on'?'Marquer vendu':'Remettre en vente'}</button>
-        <button class="act-btn ab-r" onclick="delCar(${c.id})">Supprimer</button>
-      </td>
-    </tr>`).join('');
+  body.innerHTML=cars.map(c=>`<tr>
+    <td>${c.ph&&c.ph.length?`<img class="tthumb" src="${c.ph[0]}">`:'<span style="color:var(--g2)">—</span>'}</td>
+    <td><strong style="font-family:\'Cormorant Garamond\',serif;font-size:17px;font-weight:400">${c.mk} ${c.md}</strong>${c.ph&&c.ph.length>1?`<br><span style="font-size:11px;color:var(--g3)">${c.ph.length} photos</span>`:''}</td>
+    <td>${c.yr}</td>
+    <td>${c.km?c.km.toLocaleString('fr-FR')+' km':'—'}</td>
+    <td>${c.fu||'—'}</td>
+    <td><strong style="font-family:\'Cormorant Garamond\',serif;font-size:17px;font-weight:400">${Number(c.pr).toLocaleString('fr-FR')} €</strong></td>
+    <td><span class="tbadge ${c.s==='on'?'tb-on':'tb-off'}">${c.s==='on'?'En vente':'Vendu'}</span></td>
+    <td style="white-space:nowrap">
+      <button class="act-btn ab-w" onclick="toggleCar(${c.id})">${c.s==='on'?'Marquer vendu':'Remettre en vente'}</button>
+      <button class="act-btn ab-r" onclick="delCar(${c.id})">Supprimer</button>
+    </td>
+  </tr>`).join('');
 }
-function markSeen(id){
-  const subs=gs();const s=subs.find(x=>x.id===id);
-  if(s){s.st='seen';ss(subs);refreshAdmin();}
-}
-function delSub(id){
-  if(!confirm('Supprimer cette demande ?'))return;
-  ss(gs().filter(s=>s.id!==id));refreshAdmin();
-}
+function markSeen(id){const subs=gs();const s=subs.find(x=>x.id===id);if(s){s.st='seen';ss(subs);refreshAdmin();}}
+function delSub(id){if(!confirm('Supprimer cette demande ?'))return;ss(gs().filter(s=>s.id!==id));refreshAdmin();}
 function buildSubs(subs){
   const list=document.getElementById('subs-list');
   const empty=document.getElementById('subs-empty');
   if(!subs.length){empty.style.display='block';list.innerHTML='';return;}
   empty.style.display='none';
-  list.innerHTML=subs.map(s=>`
-    <div class="sub-card">
-      <div>
-        <h4>${s.mk} ${s.md} <span style="font-weight:300;font-style:italic">(${s.yr})</span>
-          ${s.km?` — ${s.km.toLocaleString('fr-FR')} km`:''}
-          <span class="tbadge ${s.st==='new'?'tb-new':'tb-seen'}" style="margin-left:10px;font-size:9px">${s.st==='new'?'Nouveau':'Vu'}</span>
-        </h4>
-        <p style="font-size:13px;color:var(--gray3);margin-top:4px;font-weight:300">${[s.fu,s.gb,s.co].filter(Boolean).join(' · ')}</p>
-        <div class="sub-meta">
-          <span><strong>Contact :</strong> ${s.contact.fn} ${s.contact.ln}</span>
-          <span><strong>Tél :</strong> ${s.contact.tel}</span>
-          ${s.contact.em?`<span><strong>Email :</strong> ${s.contact.em}</span>`:''}
-          ${s.pr?`<span><strong>Prix souhaité :</strong> ${Number(s.pr).toLocaleString('fr-FR')} €</span>`:''}
-          <span><strong>Date :</strong> ${s.dt}</span>
-        </div>
-        ${s.no?`<p style="margin-top:10px;font-size:13px;color:var(--gray3);font-weight:300;font-style:italic">"${s.no}"</p>`:''}
+  list.innerHTML=subs.map(s=>`<div class="sub-card">
+    <div>
+      <h4>${s.mk} ${s.md} <span style="font-weight:300;font-style:italic">(${s.yr})</span>${s.km?` — ${s.km.toLocaleString('fr-FR')} km`:''}
+        <span class="tbadge ${s.st==='new'?'tb-new':'tb-seen'}" style="margin-left:10px;font-size:9px">${s.st==='new'?'Nouveau':'Vu'}</span>
+      </h4>
+      <p style="font-size:13px;color:var(--g3);margin-top:4px;font-weight:300">${[s.fu,s.gb,s.co].filter(Boolean).join(' · ')}</p>
+      <div class="sub-meta">
+        <span><strong>Contact :</strong> ${s.contact.fn} ${s.contact.ln}</span>
+        <span><strong>Tél :</strong> ${s.contact.tel}</span>
+        ${s.contact.em?`<span><strong>Email :</strong> ${s.contact.em}</span>`:''}
+        ${s.pr?`<span><strong>Prix souhaité :</strong> ${Number(s.pr).toLocaleString('fr-FR')} €</span>`:''}
+        <span><strong>Date :</strong> ${s.dt}</span>
       </div>
-      <div class="sub-actions">
-        ${s.st==='new'?`<button class="act-btn ab-w" onclick="markSeen(${s.id})">Marquer vu</button>`:''}
-        <button class="act-btn ab-r" onclick="delSub(${s.id})">Supprimer</button>
-      </div>
-    </div>`).join('');
+      ${s.no?`<p style="margin-top:10px;font-size:13px;color:var(--g3);font-weight:300;font-style:italic">"${s.no}"</p>`:''}
+    </div>
+    <div class="sub-actions">
+      ${s.st==='new'?`<button class="act-btn ab-w" onclick="markSeen(${s.id})">Marquer vu</button>`:''}
+      <button class="act-btn ab-r" onclick="delSub(${s.id})">Supprimer</button>
+    </div>
+  </div>`).join('');
 }
+
+/* ══ COOKIES RGPD ══ */
+const CK_KEY='sta_cookie_consent';
+function getCookieConsent(){try{return JSON.parse(localStorage.getItem(CK_KEY))}catch{return null}}
+function setCookieConsent(v){localStorage.setItem(CK_KEY,JSON.stringify(v))}
+function showBanner(){
+  setTimeout(()=>document.getElementById('cookie-banner').classList.add('show'),800);
+}
+function hideBanner(){document.getElementById('cookie-banner').classList.remove('show');}
+function acceptCookies(){
+  setCookieConsent({essential:true,analytics:true,ts:Date.now()});
+  hideBanner();
+}
+function refuseCookies(){
+  setCookieConsent({essential:true,analytics:false,ts:Date.now()});
+  hideBanner();
+}
+function openCookieModal(){
+  hideBanner();
+  const consent=getCookieConsent();
+  document.getElementById('ck-analytics').checked=consent?consent.analytics:false;
+  document.getElementById('cookie-modal').classList.add('open');
+}
+function closeCookieModal(){document.getElementById('cookie-modal').classList.remove('open');}
+function savePrefs(){
+  setCookieConsent({essential:true,analytics:document.getElementById('ck-analytics').checked,ts:Date.now()});
+  closeCookieModal();
+}
+// click outside modal
+document.getElementById('cookie-modal').addEventListener('click',function(e){if(e.target===this)closeCookieModal();});
+
+/* ══ INIT ══ */
 updHome();
+revealCheck();
+// Show cookie banner if no consent yet
+if(!getCookieConsent()) showBanner();
 </script>
 </body>
 </html>
